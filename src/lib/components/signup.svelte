@@ -24,19 +24,16 @@
 				body
 			});
 
-			const data = await res.json();
+			const json = await res.json();
 
-			if (res.ok) {
-				if (data.user) {
-					$session.user = data.user;
-					goto("/profile");
-				}
+			if (json.error) {
+				throw new Error(json.message ? json.message : json.error);
+			} else if (res.ok && json?.data?.user) {
+				const { data } = json;
+				$session.user = data.user;
+				goto("/profile");
 			} else {
-				if (data.error) {
-					throw new Error(data.message ? data.message : data.error);
-				} else {
-					throw new Error("Something went wrong");
-				}
+				throw new Error("Something went wrong");
 			}
 		} catch (err) {
 			assertIsError(err);

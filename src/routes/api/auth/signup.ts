@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { assertIsError } from "$lib/utils/assertions";
 import { prisma } from "$lib/utils/db";
 import * as cookie from "cookie";
+import { respond } from "$lib/utils/respond";
 
 export const post: RequestHandler = async ({ request }) => {
 	try {
@@ -16,24 +17,12 @@ export const post: RequestHandler = async ({ request }) => {
 		});
 
 		if (isEmailUsed) {
-			return {
-				status: 401,
-				body: {
-					error: "Unauthorized",
-					message: "Email is not available"
-				}
-			};
+			return respond.Error("Email is not available");
 		}
 
 		// validate password
 		if (password.length < 8) {
-			return {
-				status: 400,
-				body: {
-					error: "Bad Request",
-					message: "Password must be at least 8 characters"
-				}
-			};
+			return respond.BadRequest("Password must be at least 8 characters");
 		}
 
 		// hash password
@@ -67,27 +56,15 @@ export const post: RequestHandler = async ({ request }) => {
 			})
 		};
 
-		return {
-			status: 201,
-			body: {
-				user: {
-					name: user.name,
-					email: user.email
-				}
-			},
-			headers
-		};
+		return respond.Response(
+			{ user: { name: user.name, email: user.email } },
+			{ status: 201, headers }
+		);
 	} catch (err) {
 		assertIsError(err);
 
 		console.error(err);
 
-		return {
-			status: 500,
-			body: {
-				error: "Internal Server Error",
-				message: "Something went wrong"
-			}
-		};
+		return respond.InternalServerError();
 	}
 };

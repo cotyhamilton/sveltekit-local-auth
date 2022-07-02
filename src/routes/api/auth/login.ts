@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { assertIsError } from "$lib/utils/assertions";
 import { prisma } from "$lib/utils/db";
 import * as cookie from "cookie";
+import { respond } from "$lib/utils/respond";
 
 export const post: RequestHandler = async ({ request }) => {
 	try {
@@ -16,24 +17,12 @@ export const post: RequestHandler = async ({ request }) => {
 		});
 
 		if (!user) {
-			return {
-				status: 401,
-				body: {
-					error: "Unauthorized",
-					message: "Incorrect email or password"
-				}
-			};
+			return respond.Error("Incorrect email or password");
 		}
 
 		// compare password
 		if (!(await bcrypt.compare(password, user.password))) {
-			return {
-				status: 401,
-				body: {
-					error: "Unauthorized",
-					message: "Incorrect email or password"
-				}
-			};
+			return respond.Error("Incorrect email or password");
 		}
 
 		// create session
@@ -56,26 +45,12 @@ export const post: RequestHandler = async ({ request }) => {
 			})
 		};
 
-		return {
-			body: {
-				user: {
-					name: user.name,
-					email: user.email
-				}
-			},
-			headers
-		};
+		return respond.Response({ user: { name: user?.name, email: user?.email } }, { headers });
 	} catch (err) {
 		assertIsError(err);
 
 		console.error(err);
 
-		return {
-			status: 500,
-			body: {
-				error: "Internal Server Error",
-				message: "Something went wrong"
-			}
-		};
+		return respond.InternalServerError();
 	}
 };
