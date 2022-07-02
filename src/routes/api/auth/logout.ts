@@ -1,6 +1,8 @@
-import type { RequestHandler } from "./__types/logout";
-import { prisma } from "$lib/utils/db";
 import * as cookie from "cookie";
+
+import { prisma } from "$lib/utils/db";
+
+import type { RequestHandler } from "./__types/logout";
 
 export const get: RequestHandler = async ({ request: { headers } }) => {
 	try {

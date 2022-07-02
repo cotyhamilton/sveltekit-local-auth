@@ -1,9 +1,11 @@
-import type { RequestHandler } from "./__types/signup";
 import bcrypt from "bcrypt";
+import * as cookie from "cookie";
+
 import { assertIsError } from "$lib/utils/assertions";
 import { prisma } from "$lib/utils/db";
-import * as cookie from "cookie";
 import { respond } from "$lib/utils/respond";
+
+import type { RequestHandler } from "./__types/signup";
 
 export const post: RequestHandler = async ({ request }) => {
 	try {

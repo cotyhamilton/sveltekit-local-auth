@@ -13,8 +13,8 @@
 </script>
 
 <script lang="ts">
-	import { session } from "$app/stores";
 	import { goto } from "$app/navigation";
+	import { session } from "$app/stores";
 </script>
 
 <p>hello {$session?.user?.name}</p>

@@ -1,5 +1,7 @@
-import type { Handle, GetSession } from "@sveltejs/kit";
+import type { GetSession, Handle } from "@sveltejs/kit";
+
 import * as cookie from "cookie";
+
 import { getUserFromSession } from "$lib/utils/db";
 
 export const handle: Handle = async ({ event, resolve }) => {

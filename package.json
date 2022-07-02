@@ -16,6 +16,7 @@
 		"@prisma/client": "^4.0.0",
 		"@sveltejs/adapter-node": "^1.0.0-next.78",
 		"@sveltejs/kit": "next",
+		"@trivago/prettier-plugin-sort-imports": "^3.2.0",
 		"@types/bcrypt": "^5.0.0",
 		"@types/cookie": "^0.5.1",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
