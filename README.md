@@ -17,13 +17,27 @@ Full stack sveltekit local authentication using prisma and the sveltekit node ad
 
 ## Usage
 
-```
+```sh
 # after prisma set up
 
 # create and apply migrations from schema
 npx prisma migrate dev --name init
 
+# development
 yarn dev
+
+# production
+yarn build
+
+node build
+
+# docker
+docker build -t sk-auth .
+
+docker run --rm -it -p 3000:3000 \
+    -v `pwd`/prisma/dev.db:/app/dev.db \
+    -e DATABASE_URL="file:/app/dev.db" \
+    sk-auth
 ```
 
 ## Reference

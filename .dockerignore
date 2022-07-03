@@ -1,0 +1,10 @@
+**
+
+!/src/**
+!/prisma/schema.prisma
+!/static/**
+!/.npmrc
+!/svelte.config.js
+!/tsconfig.json
+!/package.json
+!/yarn.lock
