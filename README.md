@@ -1,5 +1,3 @@
-⚠️ WIP: PROJECT IS INSECURE AND NOT READY TO BE USED
-
 # SvelteKit Local Auth
 
 Full stack sveltekit local authentication starter using prisma and the sveltekit node adapter
@@ -8,4 +6,4 @@ Full stack sveltekit local authentication starter using prisma and the sveltekit
 
 - [x] handle session expiry, cleanup, and reauth (remember me)
 - [x] reusable http responses and error messages
-- [ ] handle database disconnect
+- [ ] ~~handle database disconnect~~ (Prisma does this for free 👌 )
