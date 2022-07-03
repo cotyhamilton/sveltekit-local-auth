@@ -9,7 +9,7 @@ import type { RequestHandler } from "./__types/login";
 
 export const post: RequestHandler = async ({ request }) => {
 	try {
-		const { email, password } = await request.json();
+		const { email, password, remember } = await request.json();
 
 		// get user
 		const user = await prisma.user.findUnique({
@@ -33,7 +33,8 @@ export const post: RequestHandler = async ({ request }) => {
 		await prisma.session.create({
 			data: {
 				id: cookieId,
-				userId: user.id
+				userId: user.id,
+				remember
 			}
 		});
 
@@ -41,7 +42,7 @@ export const post: RequestHandler = async ({ request }) => {
 		const headers = {
 			"Set-Cookie": cookie.serialize("session_id", cookieId, {
 				httpOnly: true,
-				maxAge: 60 * 60,
+				maxAge: remember ? 60 * 60 * 24 * 30 : 60 * 60,
 				sameSite: "strict",
 				path: "/"
 			})

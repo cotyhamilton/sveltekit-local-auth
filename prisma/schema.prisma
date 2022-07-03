@@ -15,9 +15,14 @@ model User {
   email    String @unique
   name     String
   password String
+
+  @@map("users")
 }
 
 model Session {
-  id     String @id
-  userId Int
+  id       String  @id
+  userId   Int
+  remember Boolean @default(false)
+
+  @@map("sessions")
 }

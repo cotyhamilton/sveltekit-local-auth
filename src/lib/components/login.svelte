@@ -6,6 +6,7 @@
 
 	let email = "";
 	let password = "";
+	let remember = false;
 	let error: string | null = null;
 
 	async function login() {
@@ -13,7 +14,8 @@
 
 		const body = JSON.stringify({
 			email,
-			password
+			password,
+			remember
 		});
 
 		try {
@@ -49,6 +51,10 @@
 	<label>
 		password
 		<input type="password" bind:value={password} />
+	</label>
+	<label>
+		remember me
+		<input type="checkbox" bind:checked={remember} />
 	</label>
 	<input type="submit" />
 	{#if error}

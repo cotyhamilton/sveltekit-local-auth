@@ -6,6 +6,6 @@ Full stack sveltekit local authentication starter using prisma and the sveltekit
 
 # TODO
 
-- [ ] handle session expiry, cleanup, and reauth (remember me)
+- [x] handle session expiry, cleanup, and reauth (remember me)
 - [x] reusable http responses and error messages
 - [ ] handle database disconnect
