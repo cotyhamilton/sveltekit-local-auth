@@ -5,7 +5,7 @@ Full stack sveltekit local authentication using prisma and the sveltekit node ad
 ## Ideas
 
 - Template for building secure, self-hosted monoliths
-- Sign up, log in, and log out endpoints
+- Sign up, log in, log out, and change password endpoints
 - Uses cookies and a session table to persist auth (don't do this for real apps, use redis)
 - Prisma ORM and schema
 - Bcrypt for handling passwords
