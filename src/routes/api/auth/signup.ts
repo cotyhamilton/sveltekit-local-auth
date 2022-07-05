@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import * as cookie from "cookie";
 
-import { assertIsError } from "$lib/utils/assertions";
-import { prisma } from "$lib/utils/db";
-import { respond } from "$lib/utils/respond";
+import { prisma } from "$lib/common/db";
+import { BadRequestException, HTTPError } from "$lib/common/httpErrors";
+import { respond } from "$lib/common/respond";
 
 import type { RequestHandler } from "./__types/signup";
 
@@ -19,12 +19,12 @@ export const post: RequestHandler = async ({ request }) => {
 		});
 
 		if (isEmailUsed) {
-			return respond.Error("Email is not available");
+			return respond.Error({ message: "Email is not available" });
 		}
 
 		// validate password
 		if (password.length < 8) {
-			return respond.BadRequest("Password must be at least 8 characters");
+			throw new BadRequestException("Password must be at least 8 characters");
 		}
 
 		// hash password
@@ -59,15 +59,12 @@ export const post: RequestHandler = async ({ request }) => {
 			})
 		};
 
-		return respond.Response(
-			{ user: { name: user.name, email: user.email } },
-			{ status: 201, headers }
-		);
+		return respond.Ok({ user: { name: user.name, email: user.email } }, { status: 201, headers });
 	} catch (err) {
-		assertIsError(err);
-
+		if (err instanceof HTTPError) {
+			return respond.Error(err);
+		}
 		console.error(err);
-
-		return respond.InternalServerError();
+		return respond.Error();
 	}
 };

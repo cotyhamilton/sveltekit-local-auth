@@ -16,7 +16,7 @@
 	import { goto } from "$app/navigation";
 	import { session } from "$app/stores";
 
-	import { assertIsError } from "$lib/utils/assertions";
+	import { assertIsError } from "$lib/common/assertions";
 
 	let currentPassword: string;
 	let newPassword: string;
@@ -41,7 +41,7 @@
 			const json = await res.json();
 
 			if (json.error) {
-				throw new Error(json.message ? json.message : json.error);
+				throw new Error(json.error?.message ? json.error.message : "Something went wrong");
 			} else if (res.ok && json?.data?.message) {
 				const { data } = json;
 				info = data.message;

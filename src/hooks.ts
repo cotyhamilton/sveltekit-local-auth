@@ -3,7 +3,7 @@ import type { GetSession, Handle } from "@sveltejs/kit";
 import type { Session } from "@prisma/client";
 import * as cookie from "cookie";
 
-import { prisma } from "$lib/utils/db";
+import { prisma } from "$lib/common/db";
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const { session_id } = cookie.parse(event.request.headers.get("cookie") || "");

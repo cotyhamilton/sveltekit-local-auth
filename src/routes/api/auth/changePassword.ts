@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
 import * as cookie from "cookie";
 
-import { assertIsError } from "$lib/utils/assertions";
-import { prisma } from "$lib/utils/db";
-import { respond } from "$lib/utils/respond";
+import { prisma } from "$lib/common/db";
+import { BadRequestException, HTTPError } from "$lib/common/httpErrors";
+import { respond } from "$lib/common/respond";
 
 import type { RequestHandler } from "./__types/changePassword";
 
-export const post: RequestHandler = async ({ request }) => {
+export const post: RequestHandler = async ({ request, locals }) => {
 	try {
 		const { currentPassword, newPassword } = await request.json();
 
@@ -31,12 +31,12 @@ export const post: RequestHandler = async ({ request }) => {
 
 		// compare password
 		if (!(await bcrypt.compare(currentPassword, user.password))) {
-			return respond.Error("Incorrect password");
+			return respond.Error({ message: "Incorrect password", status: 200 });
 		}
 
 		// validate new password
 		if (newPassword.length < 8) {
-			return respond.BadRequest("Password must be at least 8 characters");
+			throw new BadRequestException("New password must be at least 8 characters");
 		}
 
 		// hash new password
@@ -52,12 +52,12 @@ export const post: RequestHandler = async ({ request }) => {
 			}
 		});
 
-		return respond.Response({ message: "Password updated successfully" });
+		return respond.Ok({ message: "Password updated successfully" });
 	} catch (err) {
-		assertIsError(err);
-
+		if (err instanceof HTTPError) {
+			return respond.Error(err);
+		}
 		console.error(err);
-
-		return respond.InternalServerError();
+		return respond.Error();
 	}
 };

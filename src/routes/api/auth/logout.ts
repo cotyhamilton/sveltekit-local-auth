@@ -1,6 +1,6 @@
 import * as cookie from "cookie";
 
-import { prisma } from "$lib/utils/db";
+import { prisma } from "$lib/common/db";
 
 import type { RequestHandler } from "./__types/logout";
 
